@@ -258,10 +258,10 @@ export default function App() {
       </div>
 
       <nav className="fixed top-9 left-0 w-full h-[82px] bg-[#0B251E]/95 backdrop-blur-md border-b border-[#c5a059]/20 z-[1000] px-5 md:px-12 flex items-center justify-between">
-        <a href="#hero" className="font-serif font-bold tracking-[0.22em] text-sm md:text-lg uppercase text-white">
+        <a href="#hero" className="font-serif font-bold tracking-[0.22em] text-sm md:text-lg uppercase text-white shrink-0 whitespace-nowrap mr-4">
           Premium Hospitality Asset
         </a>
-        <div className="hidden lg:flex items-center gap-8 text-[11px] uppercase tracking-[0.18em] font-bold">
+        <div className="hidden xl:flex items-center gap-6 lg:gap-8 text-[10px] lg:text-[11px] uppercase tracking-[0.18em] font-bold">
           {navItems.map((item) => (
             <a key={item.href} href={item.href} className="text-gray-200 hover:text-[#c5a059] transition-colors">
               {item.label}
@@ -275,14 +275,14 @@ export default function App() {
           <button onClick={openInquiry} className="hidden sm:inline-flex bg-[#c5a059] hover:bg-[#a98041] text-[#0B251E] text-[11px] uppercase tracking-[0.16em] font-bold py-3 px-5 rounded transition-all">
             Request Memorandum
           </button>
-          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="lg:hidden p-2 text-gray-300">
+          <button onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="xl:hidden p-2 text-gray-300">
             {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
           </button>
         </div>
       </nav>
 
       {mobileMenuOpen && (
-        <div className="fixed top-[118px] left-0 right-0 z-[999] bg-[#0B251E]/98 border-b border-[#c5a059]/30 p-6 lg:hidden">
+        <div className="fixed top-[118px] left-0 right-0 z-[999] bg-[#0B251E]/98 border-b border-[#c5a059]/30 p-6 xl:hidden">
           <div className="flex flex-col gap-4 text-xs uppercase tracking-[0.2em] font-bold">
             {navItems.map((item) => (
               <a key={item.href} href={item.href} onClick={() => setMobileMenuOpen(false)} className="border-b border-white/10 pb-3 text-gray-200">
