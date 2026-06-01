@@ -515,7 +515,7 @@ export default function App() {
                         <img
                           src={bRollClips.find(c => c.id === activeVideoId)?.thumbnail ?? `https://lh3.googleusercontent.com/d/${activeVideoId}`}
                           alt="Video thumbnail"
-                          className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity"
+                          className="absolute inset-0 w-full h-full object-contain object-center opacity-40 group-hover:opacity-60 transition-opacity"
                           referrerPolicy="no-referrer"
                           onError={(e) => { (e.target as HTMLImageElement).src = `https://lh3.googleusercontent.com/d/${activeVideoId}`; }}
                         />
