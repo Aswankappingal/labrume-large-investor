@@ -55,42 +55,49 @@ const bRollClips = [
     title: 'Primary Cinematic Walkthrough',
     category: 'Cinematic Showcase',
     desc: 'Cinematic overview of property scale, premium guest suites, and destination setting.',
+    thumbnail: media.hero,
   },
   {
     id: '1eCbIh0mPwbtNQBqXWw6ASeAdN9CzBBRA',
     title: 'Aerial Flyover & Elevation',
     category: 'Drone Footage',
     desc: 'High-altitude drone sweep showing clear boundaries, highway frontage, and architectural height.',
+    thumbnail: media.exterior,
   },
   {
     id: '1GOH2qJwU-Moq5IdBDWmrx4VJRrFVqeHJ',
     title: 'Highway Frontage & Boundary',
     category: 'Drone Footage',
     desc: 'Drone perspective tracking direct NH access corridor and local panchayat boundary contours.',
+    thumbnail: media.landscape,
   },
   {
     id: '1UT0ykJ6Pz6vE73rUinT6E15La3GZP7bc',
     title: 'Wayanad Mountain Panorama',
     category: 'Drone Footage',
     desc: 'Scenic high-elevation drone view highlighting the surrounding lush green eco-resort corridor.',
+    thumbnail: media.landscape,
   },
   {
     id: '1M4obPeTm6813vNeA4PcZ91dva5mbL5bi',
     title: 'Entrance & Building Façade',
     category: 'Ground Footage',
     desc: 'Ground camera tracking the premium G+6 completed structural development and driveways.',
+    thumbnail: media.hero,
   },
   {
     id: '16yRbJ0-3WHgQgKkTnYFTw0R95A1EU0b0',
     title: 'Infinity Pool & Recreational Deck',
     category: 'Ground Footage',
     desc: 'Ground footage of the premium infinity guest pool and outdoor recreational spaces.',
+    thumbnail: media.pool,
   },
   {
     id: '1nlf7xYGPNkGMyM23grSk2kFon6giuO3u',
     title: 'Signature Spa & Wellness Wings',
     category: 'Ground Footage',
     desc: 'Walkthrough of operational wellness rooms, reception lobby, and guest facilities.',
+    thumbnail: media.interior,
   },
 ];
 
@@ -441,8 +448,8 @@ export default function App() {
             />
             
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-stretch mt-8">
-              {/* Left Column: Interactive Playlist (5 cols) */}
-              <div className="lg:col-span-4 bg-[#051310] border border-[#c5a059]/20 rounded-2xl p-5 md:p-6 flex flex-col justify-between">
+              {/* Left Column: Interactive Playlist (5 cols) — Rendered second on mobile */}
+              <div className="lg:col-span-4 bg-[#051310] border border-[#c5a059]/20 rounded-2xl p-5 md:p-6 flex flex-col justify-between order-2 lg:order-1">
                 <div className="space-y-4">
                   <div className="border-b border-[#c5a059]/15 pb-3">
                     <span className="text-[10px] tracking-widest font-mono text-[#c5a059] uppercase block font-bold">Confidential Video Audit</span>
@@ -491,13 +498,12 @@ export default function App() {
                 </div>
               </div>
 
-              {/* Right Column: Featured Video Viewport (8 cols) */}
-              <div className="lg:col-span-8 flex flex-col justify-center">
-                <div className="relative w-full rounded-2xl overflow-hidden border border-[#c5a059]/30 shadow-2xl bg-black">
-                  <div className="absolute -inset-3 border border-[#c5a059]/40 rounded-2xl pointer-events-none z-10" />
+              {/* Right Column: Featured Video Viewport (8 cols) — Rendered first on mobile for optimal UX */}
+              <div className="lg:col-span-8 flex flex-col justify-center order-1 lg:order-2">
+                <div className="relative w-full rounded-2xl overflow-hidden border border-[#c5a059]/30 shadow-2xl bg-[#051310] flex flex-col">
                   
-                  {/* Aspect Ratio container for video frame */}
-                  <div className="aspect-video w-full relative bg-[#030f0c]">
+                  {/* Aspect Ratio container for video frame — sized responsibly on mobile */}
+                  <div className="w-full relative bg-[#030f0c] aspect-video">
                     {!videoLoaded ? (
                       /* Click-to-play overlay — avoids Drive's autoplay block */
                       <button
@@ -505,24 +511,24 @@ export default function App() {
                         className="absolute inset-0 w-full h-full flex flex-col items-center justify-center gap-5 group cursor-pointer bg-[#030f0c] hover:bg-[#051310] transition-colors"
                         aria-label="Play video"
                       >
-                        {/* Thumbnail image from Drive */}
+                        {/* Beautiful fallback-safe high-res preview thumbnail */}
                         <img
-                          src={`https://lh3.googleusercontent.com/d/${activeVideoId}`}
+                          src={bRollClips.find(c => c.id === activeVideoId)?.thumbnail ?? `https://lh3.googleusercontent.com/d/${activeVideoId}`}
                           alt="Video thumbnail"
-                          className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-50 transition-opacity"
+                          className="absolute inset-0 w-full h-full object-cover opacity-40 group-hover:opacity-60 transition-opacity"
                           referrerPolicy="no-referrer"
-                          onError={(e) => { (e.target as HTMLImageElement).style.display = 'none'; }}
+                          onError={(e) => { (e.target as HTMLImageElement).src = `https://lh3.googleusercontent.com/d/${activeVideoId}`; }}
                         />
                         {/* Play button circle */}
                         <div className="relative z-10 w-20 h-20 rounded-full bg-[#c5a059] group-hover:bg-[#a98041] group-hover:scale-110 transition-all duration-300 flex items-center justify-center shadow-2xl shadow-[#c5a059]/30">
                           <Play className="w-8 h-8 text-[#0B251E] fill-current ml-1" />
                         </div>
-                        <div className="relative z-10 text-center space-y-1 px-6">
-                          <p className="text-white font-serif text-sm uppercase tracking-widest font-bold">
+                        <div className="relative z-10 text-center space-y-2 px-6">
+                          <p className="text-white font-serif text-sm sm:text-base uppercase tracking-widest font-bold">
                             {bRollClips.find(c => c.id === activeVideoId)?.title ?? 'Play Video'}
                           </p>
-                          <p className="text-[#c5a059] text-[10px] uppercase tracking-widest font-mono">
-                            Click to load • Google Drive
+                          <p className="text-[#c5a059] text-[10px] sm:text-xs uppercase tracking-widest font-mono font-semibold">
+                            Click to Stream Confidential Audit Video
                           </p>
                         </div>
                       </button>
@@ -539,15 +545,35 @@ export default function App() {
                       />
                     )}
                   </div>
-                  {/* Open in Drive link */}
-                  <a
-                    href={`https://drive.google.com/file/d/${activeVideoId}/view`}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="absolute bottom-3 right-3 z-20 bg-[#051310]/80 hover:bg-[#c5a059] text-[#c5a059] hover:text-[#0B251E] text-[9px] uppercase tracking-widest font-bold px-3 py-1.5 rounded border border-[#c5a059]/30 hover:border-transparent transition-all flex items-center gap-1.5 backdrop-blur-sm"
-                  >
-                    <Play className="w-2.5 h-2.5" /> Open in Drive
-                  </a>
+
+                  {/* Elegant Dashboard Info & Native Player Control Bar */}
+                  <div className="bg-[#051310] border-t border-[#c5a059]/20 p-4 sm:p-5 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 z-20">
+                    <div className="space-y-1">
+                      <span className="text-[9px] uppercase tracking-wider text-[#c5a059] font-mono font-bold block">
+                        {bRollClips.find(c => c.id === activeVideoId)?.category ?? 'Cinematic Showcase'}
+                      </span>
+                      <h4 className="text-xs sm:text-sm font-serif font-bold uppercase tracking-wide text-white leading-tight">
+                        {bRollClips.find(c => c.id === activeVideoId)?.title ?? 'Video Audit'}
+                      </h4>
+                      <p className="text-[10px] text-gray-400 font-light leading-relaxed max-w-md">
+                        {bRollClips.find(c => c.id === activeVideoId)?.desc ?? ''}
+                      </p>
+                    </div>
+
+                    <div className="flex flex-col items-stretch sm:items-end gap-1.5 w-full sm:w-auto shrink-0">
+                      <a
+                        href={`https://drive.google.com/file/d/${activeVideoId}/view`}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="w-full sm:w-auto bg-[#c5a059]/10 hover:bg-[#c5a059] text-[#c5a059] hover:text-[#0B251E] text-[10px] uppercase tracking-widest font-bold px-4 py-2.5 rounded border border-[#c5a059]/30 hover:border-transparent transition-all flex items-center justify-center gap-1.5"
+                      >
+                        <Play className="w-3 h-3 fill-current" /> Open in Native Player
+                      </a>
+                      <span className="text-[9px] text-gray-500 text-center sm:text-right font-light leading-snug max-w-xs block sm:inline">
+                        *Tip: For immediate high-speed stream &amp; full screen, click above.
+                      </span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
